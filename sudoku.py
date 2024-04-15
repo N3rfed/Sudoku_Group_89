@@ -8,7 +8,7 @@ def draw_game_start(screen):
     start_title_font = pygame.font.Font(None,100)
     button_font = pygame.font.Font(None, 70)
 
-    screen.fill(0,0,0)
+    screen.fill((0,0,0))
 
     title_surface = start_title_font.render("Sudoku", 0 , (255,255,255))
     title_rectangle = title_surface.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 150))
@@ -18,7 +18,7 @@ def draw_game_start(screen):
     medium_text = button_font.render("Medium", 0, (255,255,255))
     hard_text = button_font.render("Hard", 0, (255,255,255))
 
-    easy_surface = pygame.Surface((easy_text.get_size()[0] + 20, easy_text.get_size[1] +20))
+    easy_surface = pygame.Surface((easy_text.get_size()[0] + 20, easy_text.get_size()[1] +20))
     easy_surface.fill(LINE_COLOR)
     easy_surface.blit(easy_text,(10,10))
     medium_surface = pygame.Surface((medium_text.get_size()[0] +20, medium_text.get_size()[1] +20))
