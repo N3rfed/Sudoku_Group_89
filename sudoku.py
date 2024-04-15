@@ -1,6 +1,8 @@
 import pygame
 import sys
-
+LINE_COLOR = (30, 227, 49)
+WIDTH = 800
+HEIGHT = 600
 
 def draw_game_start(screen):
     start_title_font = pygame.font.Font(None,100)
@@ -9,7 +11,7 @@ def draw_game_start(screen):
     screen.fill(255,255,255)
 
     title_surface = start_title_font.render("Sudoku", 0 , (255,255,255))
-    title_rectangle = title_surface.get_rect(center=(800 // 2, 800 // 2 - 150))
+    title_rectangle = title_surface.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 150))
     screen.blit(title_surface, title_rectangle)
 
     easy_text = button_font.render("Easy", 0, (255,255,255))
@@ -19,9 +21,17 @@ def draw_game_start(screen):
     easy_surface = pygame.Surface((easy_text.get_size()[0] + 20, easy_text.get_size[1] +20))
     easy_surface.fill(LINE_COLOR)
     easy_surface.blit(easy_text,(10,10))
-    medium_surface = pygame.Surface(((medium_text.get_size()[0] +20, medium_text.get_size()[1] +20))
+    medium_surface = pygame.Surface((medium_text.get_size()[0] +20, medium_text.get_size()[1] +20))
     medium_surface.fill(LINE_COLOR)
     medium_surface.blit(medium_text, (10, 10))
-    hard_surface = pygame.Surface(((hard_text.get_size()[0] + 20, hard_text.get_size()[1] + 20))
+    hard_surface = pygame.Surface((hard_text.get_size()[0] + 20, hard_text.get_size()[1] + 20))
     hard_surface.fill(LINE_COLOR)
     hard_surface.blit(medium_text, (10, 10))
+
+    easy_rectangle = easy_surface.get_rect(center =(WIDTH//2, HEIGHT//2 + 50))
+    medium_rectangle = medium_surface.get_rect(center =(WIDTH//2, HEIGHT//2 + 150))
+    hard_rectangle = hard_surface.get_rect(center=(WIDTH//2, HEIGHT//2+ 200))
+
+    screen.blit(easy_surface,easy_rectangle)
+    screen.blit(medium_surface,medium_rectangle)
+    screen.blit(hard_surface, hard_rectangle)
