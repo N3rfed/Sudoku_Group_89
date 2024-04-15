@@ -253,8 +253,6 @@ class Board:
         self.y = y
         coordinates = (x, y)
 
-    def
-
 def generate_sudoku(size, removed):
     sudoku = SudokuGenerator(size, removed)
     sudoku.fill_values()
