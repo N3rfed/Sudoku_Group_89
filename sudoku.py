@@ -8,7 +8,7 @@ def draw_game_start(screen):
     start_title_font = pygame.font.Font(None,100)
     button_font = pygame.font.Font(None, 70)
 
-    screen.fill((0,0,0))
+    screen.fill((255,255,255))
 
     title_surface = start_title_font.render("Sudoku", 0 , (255,255,255))
     title_rectangle = title_surface.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 150))
@@ -30,11 +30,20 @@ def draw_game_start(screen):
 
     easy_rectangle = easy_surface.get_rect(center =(WIDTH//2, HEIGHT//2 + 50))
     medium_rectangle = medium_surface.get_rect(center =(WIDTH//2, HEIGHT//2 + 150))
-    hard_rectangle = hard_surface.get_rect(center=(WIDTH//2, HEIGHT//2+ 200))
+    hard_rectangle = hard_surface.get_rect(center=(WIDTH//2, HEIGHT//2 + 200))
 
     screen.blit(easy_surface,easy_rectangle)
     screen.blit(medium_surface,medium_rectangle)
     screen.blit(hard_surface, hard_rectangle)
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if easy_rectangle.collidepoint(event.pos):
+                    pass #unfinished
+
 
 if __name__ == "__main__":
     game_over = False
