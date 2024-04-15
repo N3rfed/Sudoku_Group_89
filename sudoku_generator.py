@@ -7,30 +7,33 @@ https://www.geeksforgeeks.org/program-sudoku-generator/
 """
 
 class SudokuGenerator:
-    '''
-	create a sudoku board - initialize class variables and set up the 2D board
-	This should initialize:
-	self.row_length		- the length of each row
-	self.removed_cells	- the total number of cells to be removed
-	self.board			- a 2D list of ints to represent the board
-	self.box_length		- the square root of row_length
 
-	Parameters:
-    row_length is the number of rows/columns of the board (always 9 for this project)
-    removed_cells is an integer value - the number of cells to be removed
+	# create a sudoku board - initialize class variables and set up the 2D board
+	# This should initialize:
+	# self.row_length		- the length of each row
+	# self.removed_cells	- the total number of cells to be removed
+	# self.board			- a 2D list of ints to represent the board
+	# self.box_length		- the square root of row_length
+    #
+	# Parameters:
+    # row_length is the number of rows/columns of the board (always 9 for this project)
+    # removed_cells is an integer value - the number of cells to be removed
 
-	Return:
-	None
-    '''
+	# Return:
+	# None
+
     def __init__(self, row_length, removed_cells):
         pass
-
-    '''
-	Returns a 2D python list of numbers which represents the board
-
-	Parameters: None
-	Return: list[list]
-    '''
+        self.row_length = 9
+        self.removed_cells = removed_cells
+        self.board = [[0 for i in range(9)] for j in range(9)]
+        self.box_length = (row_length) * (row_length)
+    #
+	# Returns a 2D python list of numbers which represents the board
+    #
+	# Parameters: None
+	# Return: list[list]
+    # '''
     def get_board(self):
         pass
 
