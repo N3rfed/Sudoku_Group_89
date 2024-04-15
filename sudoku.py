@@ -43,6 +43,7 @@ def draw_game_start(screen):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if easy_rectangle.collidepoint(event.pos):
                     pass #unfinished
+        pygame.display.update()
 
 
 if __name__ == "__main__":
