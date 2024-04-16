@@ -25,7 +25,6 @@ class SudokuGenerator:
     '''
 
     def __init__(self, row_length, removed_cells):
-        pass
 
         self.row_length = 9
         self.removed_cells = removed_cells
