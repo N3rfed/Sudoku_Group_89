@@ -52,7 +52,7 @@ class SudokuGenerator:
 	Parameters:
 	row is the index of the row we are checking
 	num is the value we are looking for in the row
-	
+
 	Return: boolean
     '''
 
@@ -66,7 +66,7 @@ class SudokuGenerator:
 	Parameters:
 	col is the index of the column we are checking
 	num is the value we are looking for in the column
-	
+
 	Return: boolean
     '''
 
@@ -116,7 +116,14 @@ class SudokuGenerator:
     '''
 
     def fill_box(self, row_start, col_start):
-        pass
+        box_values = []
+        for row in range(row_start, row_start+2):
+            for col in range(col_start, col_start+2):
+                possible_values=[n for n in range(1,10) if n not in box_values]
+                if possible_values:
+                    digit=random.choice(possible_values)
+                    self.board[row][col] = digit
+                    box_values.append(digit)
 
     '''
     Fills the three boxes along the main diagonal of the board
@@ -127,19 +134,20 @@ class SudokuGenerator:
     '''
 
     def fill_diagonal(self):
-        pass
+        for i in range(0,9,3):
+            self.fill_box(i,i)
 
     # '''
     # DO NOT CHANGE
     # Provided for students
     # Fills the remaining cells of the board
     # Should be called after the diagonal boxes have been filled
-	#
-	# Parameters:
-	# row, col specify the coordinates of the first empty (0) cell
     #
-	# Return:
-	# boolean (whether or not we could solve the board)
+    # Parameters:
+    # row, col specify the coordinates of the first empty (0) cell
+    #
+    # Return:
+    # boolean (whether or not we could solve the board)
     # '''
 
     def fill_remaining(self, row, col):
@@ -174,8 +182,8 @@ class SudokuGenerator:
     # Provided for students
     # Constructs a solution by calling fill_diagonal and fill_remaining
     #
-	# Parameters: None
-	# Return: None
+    # Parameters: None
+    # Return: None
     # '''
 
     def fill_values(self):
@@ -187,7 +195,7 @@ class SudokuGenerator:
     This is done by setting some values to 0
     Should be called after the entire solution has been constructed
     i.e. after fill_values has been called
-    
+
     NOTE: Be careful not to 'remove' the same cell multiple times
     i.e. if a cell is already 0, it cannot be removed again
 
@@ -254,6 +262,7 @@ class Board:
         self.x = x
         self.y = y
         coordinates = (x, y)
+
 
 def generate_sudoku(size, removed):
     sudoku = SudokuGenerator(size, removed)
