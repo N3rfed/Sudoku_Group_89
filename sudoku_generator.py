@@ -27,12 +27,10 @@ class SudokuGenerator:
     def __init__(self, row_length, removed_cells):
         pass
 
-    '''
-	Returns a 2D python list of numbers which represents the board
-
-	Parameters: None
-	Return: list[list]
-    '''
+        self.row_length = 9
+        self.removed_cells = removed_cells
+        self.board = [[0 for i in range(9)] for j in range(9)]
+        self.box_length = (row_length) * (row_length)
 
     def get_board(self):
         pass
@@ -90,6 +88,7 @@ class SudokuGenerator:
     '''
 
     def valid_in_box(self, row_start, col_start, num):
+
         pass
 
     '''
