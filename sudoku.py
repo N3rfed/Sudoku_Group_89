@@ -38,6 +38,8 @@ def draw_game_start(screen):
 
     while True:
         for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if easy_rectangle.collidepoint(event.pos):
                     return
@@ -54,9 +56,11 @@ def draw_game_over(winner):
     if winner == True:
         text = f"Game Won!"
         button_text = button_font.render(f"Exit", 0, (255, 255, 255))
+        btype = 0
     else:
         text = f"Game Over :("
         button_text = button_font.render(f"Restart", 0, (255, 255, 255))
+        btype = 1
     game_over_surface = game_over_font.render(text, 0, LINE_COLOR)
     game_over_rectangle = game_over_surface.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 150))
     screen.blit(game_over_surface, game_over_rectangle)
@@ -72,13 +76,17 @@ def draw_game_over(winner):
             if event.type == pygame.QUIT:
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if button_rectangle.collidepoint(event.pos):
-                    return
+                if btype:
+                    if button_rectangle.collidepoint(event.pos):
+                        sys.exit()
+                else:
+                    if button_rectangle.collidepoint(event.pos):
+                        return
         pygame.display.update()
 
-def draw_grid():
+def draw_grid(): #very broken do not use yet
     screen.fill((255,255,255))
-    pygame.draw.rect(screen,(0,0,0),pygame.rect(15,15,720,720),10)
+    pygame.draw.rect(screen,(0,0,0),pygame.Rect(15,15,720,720),10)
     i = 1
     while(i * 80) < 720:
         line_width = 5 if i%3 > 0 else 10
@@ -88,8 +96,10 @@ def draw_grid():
 if __name__ == "__main__":
     game_over = False
     pygame.init()
-    screen = pygame.display.set_mode((WIDTH, HEIGHT))
-    pygame.display.set_caption("Sudoku")
+    while game_over == False:
+        screen = pygame.display.set_mode((WIDTH, HEIGHT))
+        pygame.display.set_caption("Sudoku")
 
-    draw_game_start(screen)
-    draw_game_over(game_over)
+        draw_game_start(screen)
+        draw_grid()
+        draw_game_over(game_over)
