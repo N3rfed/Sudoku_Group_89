@@ -57,7 +57,7 @@ class SudokuGenerator:
 
     # Fix later
     def valid_in_row(self, row, num):
-        for col in self.row_length:
+        for col in range(self.row_length):
             if num == self.board[row][col]:
                 return False
         return True
@@ -75,8 +75,8 @@ class SudokuGenerator:
 
     # Fix later
     def valid_in_col(self, col, num):
-        for index in self.get_board():
-            if num == self.board[col][index]:
+        for row in self.get_board():
+            if num == self.board[row][col]:
                 return False
         return True
 
@@ -94,9 +94,9 @@ class SudokuGenerator:
     '''
 
     def valid_in_box(self, row_start, col_start, num):
-        for i in range(row_start, row_start + 3):
-            for j in range(col_start, col_start + 3):
-                if self.board[i][j] == num:
+        for row in range(row_start, row_start + 3):
+            for col in range(col_start, col_start + 3):
+                if self.board[row][col] == num:
                     return False
         return True
 
@@ -113,10 +113,15 @@ class SudokuGenerator:
 
     # not sure if this is correct, im checking if the position is filled
     def is_valid(self, row, col, num):
-        for i in range(self.row_length):
-            for j in range(len(self.board[i])):
-                if self.board[i][j] != 0:
+        if num == self.board[row][col]:
+            return False
+        else:
+            for i in range(9):
+                if num == self.board[row][i]:
                     return False
+            for j in range(9)):
+                if num == self.board[j][col]:
+                        return False
         return True
 
     '''
