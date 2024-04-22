@@ -119,9 +119,9 @@ class SudokuGenerator:
             for i in range(9):
                 if num == self.board[row][i]:
                     return False
-            for j in range(9)):
-                if num == self.board[j][col]:
-                        return False
+            # for j in range(9)):
+            # if num == self.board[j][col]:
+            # return True
         return True
 
     '''
@@ -255,6 +255,7 @@ def generate_sudoku(size, removed):
     board = sudoku.get_board()
     return board
 
+
 class Cell:
     def __init__(self, value, row, col, screen):
         self.value = value
@@ -289,6 +290,3 @@ class Board:
         self.x = x
         self.y = y
         coordinates = (x, y)
-
-
-
