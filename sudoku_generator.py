@@ -76,7 +76,7 @@ class SudokuGenerator:
     # Fix later
     def valid_in_col(self, col, num):
         for row in range(self.row_length):
-            if num == self.board[col][row]:
+            if num == self.board[row][col]:
                 return False
         return True
 
@@ -94,9 +94,8 @@ class SudokuGenerator:
     '''
 
     def valid_in_box(self, row_start, col_start, num):
-        for i in range(row_start, row_start + 3):
-            for j in range(col_start, col_start + 3):
-                if self.board[i][j] == num:
+            for col in range(col_start, col_start + 3):
+                if self.board[row][col] == num:
                     return False
         return True
 
@@ -113,11 +112,7 @@ class SudokuGenerator:
 
     # not sure if this is correct, im checking if the position is filled
     def is_valid(self, row, col, num):
-        for i in range(self.row_length):
-            for j in range(len(self.board[i])):
-                if self.board[i][j] != 0:
-                    return False
-        return True
+        return self.valid_in_row(row, num), self.valid_in_col(col, num), self.valid_in_box(row, col, num)
 
     '''
     Fills the specified 3x3 box with values
@@ -250,6 +245,7 @@ def generate_sudoku(size, removed):
     board = sudoku.get_board()
     return board
 
+
 class Cell:
     def __init__(self, value, row, col, screen):
         self.value = value
@@ -284,6 +280,3 @@ class Board:
         self.x = x
         self.y = y
         coordinates = (x, y)
-
-
-
