@@ -113,16 +113,7 @@ class SudokuGenerator:
 
     # not sure if this is correct, im checking if the position is filled
     def is_valid(self, row, col, num):
-        if num == self.board[row][col]:
-            return False
-        else:
-            for i in range(9):
-                if num == self.board[row][i]:
-                    return False
-            # for j in range(9)):
-            # if num == self.board[j][col]:
-            # return True
-        return True
+        return self.valid_in_row(row, num), self.valid_in_col(col, num), self.valid_in_box(row, col, num)
 
     '''
     Fills the specified 3x3 box with values
