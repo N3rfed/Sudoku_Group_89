@@ -94,9 +94,9 @@ class SudokuGenerator:
     '''
 
     def valid_in_box(self, row_start, col_start, num):
-            for col in range(col_start, col_start + 3):
-                if self.board[row][col] == num:
-                    return False
+        for col in range(col_start, col_start + 3):
+            if self.board[row][col] == num:
+                return False
         return True
 
     '''
@@ -218,8 +218,6 @@ class SudokuGenerator:
         self.fill_remaining(0, self)
         self.fill_values()
         return self.board
-        pass
-
 
 # '''
 # DO NOT CHANGE
@@ -280,3 +278,27 @@ class Board:
         self.x = x
         self.y = y
         coordinates = (x, y)
+
+    def clear(self):
+        pass
+
+    def sketch(self, value):
+        pass
+
+    def place_number(self, value):
+        pass
+
+    def reset_to_original(self):
+        pass
+
+    def is_full(self):
+        pass
+
+    def update_board(self):
+        pass
+
+    def find_empty(self):
+        pass
+
+    def check_board(self):
+        pass
