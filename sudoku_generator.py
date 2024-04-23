@@ -75,7 +75,7 @@ class SudokuGenerator:
 
     # Fix later
     def valid_in_col(self, col, num):
-        for row in range(9):
+        for row in range(self.row_length):
             if num == self.board[row][col]:
                 return False
         return True
