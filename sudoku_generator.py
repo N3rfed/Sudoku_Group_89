@@ -94,10 +94,11 @@ class SudokuGenerator:
     '''
 
     def valid_in_box(self, row_start, col_start, num):
-        for col in range(col_start, col_start + 3):
-            if self.board[row][col] == num:
-                return False
-        return True
+        for row in range(row_start, row_start + 3):
+            for col in range(col_start, col_start + 3):
+                if self.board[row_start + row][col_start + col] == num:
+                    return False
+            return True
 
     '''
     Determines if it is valid to enter num at (row, col) in the board
@@ -161,7 +162,7 @@ class SudokuGenerator:
     # '''
 
     def fill_remaining(self, row, col):
-        if (col >= self.row_length and row < self.row_length - 1):
+        if col >= self.row_length and row < self.row_length - 1:
             row += 1
             col = 0
         if row >= self.row_length and col >= self.row_length:
@@ -218,6 +219,7 @@ class SudokuGenerator:
         self.fill_remaining(0, self)
         self.fill_values()
         return self.board
+
 
 # '''
 # DO NOT CHANGE
