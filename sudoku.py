@@ -1,8 +1,8 @@
-import pygame
+import pygame 
 import sys
 LINE_COLOR = (30, 227, 49)
-WIDTH = 800
-HEIGHT = 800
+WIDTH = 750
+HEIGHT = 750
 
 def draw_game_start(screen):
     start_title_font = pygame.font.Font(None,100)
@@ -84,22 +84,73 @@ def draw_game_over(winner):
                         return
         pygame.display.update()
 
-def draw_grid(): #very broken do not use yet
-    screen.fill((255,255,255))
-    pygame.draw.rect(screen,(0,0,0),pygame.Rect(15,15,720,720),10)
+def draw_board(): #less broken now still doesn't render
+    screen.fill(pygame.Color("white"))
+    pygame.draw.rect(screen, pygame.Color("black"),pygame.Rect(15, 15, 720, 720),10)
     i = 1
     while(i * 80) < 720:
-        line_width = 5 if i%3 > 0 else 10
-        pygame.draw.rect(screen, pygame.Color("black"), pygame.Vector2((i*80)+15,15),pygame.Vector2((i*80)+15,735),line_width)
-        pygame.draw.rect(screen, pygame.Color("black"), pygame.Vector2(15,(i*80)+15), pygame.Vector2(735,(i*80)+15),line_width)
-        i+=1
+        line_width = 5 if i % 3 > 0 else 10
+        pygame.draw.line(screen, pygame.Color("black"), pygame.Vector2((i*80)+15, 15), pygame.Vector2((i*80)+15, 730), line_width)
+        pygame.draw.line(screen, pygame.Color("black"), pygame.Vector2(15, (i*80)+15), pygame.Vector2(730, (i*80)+15), line_width)
+        i += 1
+    pygame.display.update()
+    run = True
+    while run:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+            if event.type == pygame.KEYDOWN:
+                print(pygame.key.name(event.key))
+
+
+def draw_num(): #turbo broken
+    row = 0
+
+    while row < 9:
+        col = 0
+        while col < 9:
+            output = board[row][col]
+            number = font.render(str(output), True, pygame.Color('black'))
+
+def cursor(): #turbo broken
+    clock = pygame.time.Clock()
+    rect = draw_board()
+    rect.center = screen.get_rect().center
+    vel = 5
+
+    run = True
+    while run:
+        clock.tick(60)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+            if event.type == pygame.KEYDOWN:
+                print(pygame.key.name(event.key))
+
+        keys = pygame.key.get_pressed()
+
+        rect.x += (keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]) * vel
+        rect.y += (keys[pygame.K_DOWN] - keys[pygame.K_UP]) * vel
+
+        rect.centerx = rect.centerx % screen.get_width()
+        rect.centery = rect.centery % screen.get_height()
+
+        screen.fill(0)
+        pygame.draw.rect(screen, (255, 0, 0), rect)
+        pygame.display.flip()
+
+
 if __name__ == "__main__":
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    pygame.display.set_caption("Sudoku")
     game_over = False
     pygame.init()
     while game_over == False:
-        screen = pygame.display.set_mode((WIDTH, HEIGHT))
-        pygame.display.set_caption("Sudoku")
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT: sys.exit()
 
         draw_game_start(screen)
-        draw_grid()
+        draw_board()
         draw_game_over(game_over)
+
+
