@@ -113,6 +113,7 @@ class SudokuGenerator:
     '''
 
     def is_valid(self, row, col, num):
+        # return self.valid_in_row(row, num) and self.valid_in_col(col, num) and self.valid_in_box(row, col, num)
         if self.valid_in_row(row, num) and self.valid_in_col(col, num) and self.valid_in_box(row, col, num):
             return True
         else:
@@ -130,11 +131,19 @@ class SudokuGenerator:
     '''
 
     def fill_box(self, row_start, col_start):
-        box_values = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-        random.shuffle(box_values)
-        for row in range(self.box_length):
-            for col in range(self.box_length):
-                self.board[row_start + row][col_start + col]
+        box_values = set() # [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        # random.shuffle(box_values)
+        # for row in range(self.box_length):
+            # for col in range(self.box_length):
+                # self.board[row_start + row][col_start + col] = box_values.pop()
+        possible_values = [n for n in range(1, self.row_length + 1) if n not in box_values]
+        for i in range(self.box_length):
+            for j in range(self.box_length):
+                if possible_values:
+                    digit = random.choice(possible_values)
+                    self.board[row_start + i][col_start + j] = digit
+                    box_values.add(digit)
+                    possible_values.remove(digit)
 
     '''
     Fills the three boxes along the main diagonal of the board
@@ -215,14 +224,19 @@ class SudokuGenerator:
     '''
 
     def remove_cells(self):
-        for i in range(self.removed_cells):
+        '''for i in range(self.removed_cells):
             num = 0
             while num == 0:
-                random_row_number = random.randint(0, self.row_length-1)
-                random_col_number = random.randint(0, self.row_length-1)
+                random_row_number = random.randrange(9)
+                random_col_number = random.randrange(9)
                 num = self.board[random_row_number][random_col_number]
-                self.board[random_row_number][random_col_number] = 0
-
+            self.board[random_row_number][random_col_number] = 0'''
+        counter = self.removed_cells
+        while counter > 0:
+            row = random.randrange(9)
+            col = random.randrange(9)
+            self.board[row][col] = 0
+            counter -= 1
 
 # '''
 # DO NOT CHANGE
