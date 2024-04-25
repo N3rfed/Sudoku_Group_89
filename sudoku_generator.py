@@ -25,9 +25,9 @@ class SudokuGenerator:
     '''
 
     def __init__(self, row_length, removed_cells):
-        self.row_length = 9
+        self.row_length = row_length
         self.removed_cells = removed_cells
-        self.board = [[0 for i in range(9)] for j in range(9)]
+        self.board = [[None for i in range(9)] for j in range(9)]
         self.box_length = row_length ** (1 / 2)
 
     def get_board(self):
@@ -42,7 +42,10 @@ class SudokuGenerator:
     '''
 
     def print_board(self):
-        print(self.board)
+        for i in range(self.row_length):
+            for j in range(self.row_length):
+                print(self.board[i][j], end='')
+            print()
 
     '''
 	Determines if num is contained in the specified row (horizontal) of the board
@@ -113,7 +116,10 @@ class SudokuGenerator:
 
     # not sure if this is correct, im checking if the position is filled
     def is_valid(self, row, col, num):
-        return self.valid_in_row(row, num), self.valid_in_col(col, num), self.valid_in_box(row, col, num)
+        if self.valid_in_row(row, num) and self.valid_in_col(col, num) and self.valid_in_box(row, col, num):
+            return True
+        else:
+            return False
 
     '''
     Fills the specified 3x3 box with values
@@ -128,8 +134,8 @@ class SudokuGenerator:
 
     def fill_box(self, row_start, col_start):
         box_values = []
-        for row in range(row_start, row_start + 2):
-            for col in range(col_start, col_start + 2):
+        for row in range(row_start, row_start + 3):
+            for col in range(col_start, col_start + 3):
                 possible_values = [n for n in range(1, 10) if n not in box_values]
                 if possible_values:
                     digit = random.choice(possible_values)
@@ -145,7 +151,7 @@ class SudokuGenerator:
     '''
 
     def fill_diagonal(self):
-        for i in range(0, 9, 3):
+        for i in range(0, 7, 3):
             self.fill_box(i, i)
 
     # '''
@@ -215,10 +221,13 @@ class SudokuGenerator:
     '''
 
     def remove_cells(self):
-        self.fill_diagonal()
-        self.fill_remaining(0, self)
-        self.fill_values()
-        return self.board
+        for i in range(self.removed_cells):
+            num = 0
+            while num == 0:
+                random_row_number = random.randint(0, 9)
+                random_col_number = random.randint(0, 9)
+                num = self.board[random_row_number][random_col_number]
+            self.board[random_row_number][random_col_number] = 0
 
 
 # '''
