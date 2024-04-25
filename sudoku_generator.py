@@ -1,5 +1,5 @@
 import math, random, pygame
-
+pygame.init()
 """
 This was adapted from a GeeksforGeeks article "Program for Sudoku Generator" by Aarti_Rathi and Ankur Trisal
 https://www.geeksforgeeks.org/program-sudoku-generator/
@@ -25,11 +25,18 @@ class SudokuGenerator:
     '''
 
     def __init__(self, row_length, removed_cells):
-        self.row_length = 9
+        self.row_length = row_length
         self.removed_cells = removed_cells
-        self.board = [[0 for i in range(9)] for j in range(9)]
-        self.box_length = row_length ** (1 / 2)
+        self.board = [[None] * 9, [None] * 9, [None] * 9, [None] * 9, [None] * 9, [None] * 9, [None] * 9, [None] * 9, [None] * 9]
+        self.box_length = int(math.sqrt(row_length))
 
+
+    '''
+	Returns a 2D python list of numbers which represents the board
+
+	Parameters: None
+	Return: list[list]
+    '''
     def get_board(self):
         return self.board
 
@@ -40,9 +47,11 @@ class SudokuGenerator:
 	Parameters: None
 	Return: None
     '''
-
     def print_board(self):
-        print(self.board)
+        for i in range(self.row_length):
+            for j in range(self.row_length):
+                print(self.board[i][j], end = "")
+            print()
 
     '''
 	Determines if num is contained in the specified row (horizontal) of the board
@@ -55,12 +64,11 @@ class SudokuGenerator:
 	Return: boolean
     '''
 
-    # Fix later
     def valid_in_row(self, row, num):
-        for col in range(self.row_length):
-            if num == self.board[row][col]:
-                return False
-        return True
+        if num in self.board[row]:
+            return False
+        else:
+            return True
 
     '''
 	Determines if num is contained in the specified column (vertical) of the board
@@ -73,9 +81,8 @@ class SudokuGenerator:
 	Return: boolean
     '''
 
-    # Fix later
     def valid_in_col(self, col, num):
-        for row in range(self.row_length):
+        for row in range(len(self.board[0])):
             if num == self.board[row][col]:
                 return False
         return True
@@ -92,13 +99,12 @@ class SudokuGenerator:
 
 	Return: boolean
     '''
-
     def valid_in_box(self, row_start, col_start, num):
-        for row in range(row_start, row_start + 3):
-            for col in range(col_start, col_start + 3):
-                if self.board[row_start + row][col_start + col] == num:
+        for i in range(row_start, row_start + 3):
+            for j in range(col_start, col_start + 3):
+                if num == self.board[i][j]:
                     return False
-            return True
+        return True
 
     '''
     Determines if it is valid to enter num at (row, col) in the board
@@ -110,10 +116,11 @@ class SudokuGenerator:
 
 	Return: boolean
     '''
-
-    # not sure if this is correct, im checking if the position is filled
     def is_valid(self, row, col, num):
-        return self.valid_in_row(row, num), self.valid_in_col(col, num), self.valid_in_box(row, col, num)
+        if self.valid_in_row(row, num) and self.valid_in_col(col, num) and self.valid_in_box(row//3 * 3, col//3 * 3, num):
+            return True
+        else:
+            return False
 
     '''
     Fills the specified 3x3 box with values
@@ -125,16 +132,13 @@ class SudokuGenerator:
 
 	Return: None
     '''
-
     def fill_box(self, row_start, col_start):
-        box_values = []
-        for row in range(row_start, row_start + 2):
-            for col in range(col_start, col_start + 2):
-                possible_values = [n for n in range(1, 10) if n not in box_values]
-                if possible_values:
-                    digit = random.choice(possible_values)
-                    self.board[row][col] = digit
-                    box_values.append(digit)
+        nums = [1,2,3,4,5,6,7,8,9]
+        for i in range(row_start, row_start + 3):
+            for j in range(col_start, col_start + 3):
+                num = random.choice(nums)
+                nums.remove(num)
+                self.board[i][j] = num
 
     '''
     Fills the three boxes along the main diagonal of the board
@@ -143,26 +147,24 @@ class SudokuGenerator:
 	Parameters: None
 	Return: None
     '''
-
     def fill_diagonal(self):
-        for i in range(0, 9, 3):
+        for i in range(0, 7, 3):
             self.fill_box(i, i)
 
-    # '''
-    # DO NOT CHANGE
-    # Provided for students
-    # Fills the remaining cells of the board
-    # Should be called after the diagonal boxes have been filled
-    #
-    # Parameters:
-    # row, col specify the coordinates of the first empty (0) cell
-    #
-    # Return:
-    # boolean (whether or not we could solve the board)
-    # '''
+    '''
+    DO NOT CHANGE
+    Provided for students
+    Fills the remaining cells of the board
+    Should be called after the diagonal boxes have been filled
 
+	Parameters:
+	row, col specify the coordinates of the first empty (0) cell
+
+	Return:
+	boolean (whether or not we could solve the board)
+    '''
     def fill_remaining(self, row, col):
-        if col >= self.row_length and row < self.row_length - 1:
+        if (col >= self.row_length and row < self.row_length - 1):
             row += 1
             col = 0
         if row >= self.row_length and col >= self.row_length:
@@ -188,15 +190,14 @@ class SudokuGenerator:
                 self.board[row][col] = 0
         return False
 
-    # '''
-    # DO NOT CHANGE
-    # Provided for students
-    # Constructs a solution by calling fill_diagonal and fill_remaining
-    #
-    # Parameters: None
-    # Return: None
-    # '''
+    '''
+    DO NOT CHANGE
+    Provided for students
+    Constructs a solution by calling fill_diagonal and fill_remaining
 
+	Parameters: None
+	Return: None
+    '''
     def fill_values(self):
         self.fill_diagonal()
         self.fill_remaining(0, self.box_length)
@@ -213,94 +214,167 @@ class SudokuGenerator:
 	Parameters: None
 	Return: None
     '''
-
     def remove_cells(self):
-        self.fill_diagonal()
-        self.fill_remaining(0, self)
-        self.fill_values()
-        return self.board
+        for i in range(self.removed_cells):
+            num = 0
+            while num == 0:
+                j = random.randint(0,len(self.board)-1)
+                k = random.randint(0,len(self.board)-1)
+                num = self.board[j][k]
+            self.board[j][k] = 0
 
 
-# '''
-# DO NOT CHANGE
-# Provided for students
-# Given a number of rows and number of cells to remove, this function:
-# 1. creates a SudokuGenerator
-# 2. fills its values and saves this as the solved state
-# 3. removes the appropriate number of cells
-# 4. returns the representative 2D Python Lists of the board and solution
-#
-# Parameters:
-# size is the number of rows/columns of the board (9 for this project)
-# removed is the number of cells to clear (set to 0)
-#
-# Return: list[list] (a 2D Python list to represent the board)
-# '''
+'''
+DO NOT CHANGE
+Provided for students
+Given a number of rows and number of cells to remove, this function:
+1. creates a SudokuGenerator
+2. fills its values and saves this as the solved state
+3. removes the appropriate number of cells
+4. returns the representative 2D Python Lists of the board and solution
 
+Parameters:
+size is the number of rows/columns of the board (9 for this project)
+removed is the number of cells to clear (set to 0)
+
+Return: list[list] (a 2D Python list to represent the board)
+'''
 def generate_sudoku(size, removed):
     sudoku = SudokuGenerator(size, removed)
     sudoku.fill_values()
-    board = sudoku.get_board()
+    full_board = sudoku.get_board()
+    full_board = [x[:] for x in full_board]
     sudoku.remove_cells()
     board = sudoku.get_board()
-    return board
-
-
-class Cell:
-    def __init__(self, value, row, col, screen):
-        self.value = value
-        self.row = row
-        self.col = col
-        self.screen = screen
-
-    def set_cell_value(self, value):
-        self.value = value
-
-    def set_sketched_value(self, value):
-        self.value = value
-
-    def draw(self):
-        pass
-
+    return (board, full_board)
 
 class Board:
-    def __init__(self, width, height, screen, difficulty):
+    def __init__(self, width, height, screen, difficulty, boardArray):
         self.width = width
         self.height = height
         self.screen = screen
         self.difficulty = difficulty
+        self.boardArray = boardArray[0]
+        self.original = boardArray[1]
+        self.cellArray = [[None] * 9, [None] * 9, [None] * 9, [None] * 9, [None] * 9, [None] * 9, [None] * 9, [None] * 9, [None] * 9]
+
+        self.surface = pygame.Surface((720, 720))
+        self.surface.fill((255,255,255))
+        self.selected = None
+
+        for i in range(9):
+            for j in range(9):
+                self.cellArray[i][j] = Cell(self.boardArray[i][j], i, j, self.surface)
 
     def draw(self):
-        pass
+        for i in range(9):
+            for j in range(9):
+                self.cellArray[i][j].draw()
+        self.screen.blit(self.surface, (140, 50))
+
+        for a in range(3):
+            for b in range(3):
+                cell_rect = pygame.Rect((a * 240 + 140, b * 240 + 50), (240, 240))
+                pygame.draw.rect(self.screen, (0,0,0), cell_rect, 5)
 
     def select(self, row, col):
-        pass
+        if row < 0 or col < 0:
+            return -1
+        for i in self.cellArray:
+            for j in i:
+                j.selected = False
+        try:
+            self.cellArray[row][col].selected = True
+            self.selectedPos = (row, col)
+            self.selected = self.cellArray[row][col]
+        except:
+            pass
+
 
     def click(self, x, y):
-        self.x = x
-        self.y = y
-        coordinates = (x, y)
+        return (int(x//(self.width/9)), int(y//(self.height/9)))
 
     def clear(self):
-        pass
-
+        if self.boardArray[self.selectedPos[0]][self.selectedPos[1]] == 0:
+            self.selected.value = 0
+            self.selected.sketched = None
     def sketch(self, value):
-        pass
+        if self.boardArray[self.selectedPos[0]][self.selectedPos[1]] == 0:
+            try:
+                value = int(value)
+                if value > 9 or value < 1:
+                    raise Exception
 
-    def place_number(self, value):
-        pass
+                self.selected.sketched = value
+            except:
+                pass
+    def place_number(self):
+        if self.selected.sketched is not None:
+            self.selected.value = self.selected.sketched
+            self.selected.sketched = None
 
-    def reset_to_original(self):
-        pass
+    def reset(self):
+        for i in range(9):
+            for j in range(9):
+                self.cellArray[i][j] = Cell(self.boardArray[i][j], i, j, self.surface)
 
     def is_full(self):
-        pass
+        for i in self.cellArray:
+            for j in i:
+                if j.value == 0:
+                    return False
+        return True
+
+
 
     def update_board(self):
         pass
 
     def find_empty(self):
-        pass
+        for i in self.cellArray:
+            for j in i:
+                if j.value == 0:
+                    return (i, j)
 
     def check_board(self):
-        pass
+        for i in range(len(self.cellArray)):
+            for j in range(len(self.cellArray[i])):
+                if self.cellArray[i][j].value != self.original[i][j]:
+                    return False
+        return True
+class Cell:
+
+    def __init__(self, value, row, col, screen):
+        self.value = value
+        self.row = row
+        self.col = col
+        self.screen = screen
+        self.selected = False
+        self.sketched = None
+
+    def draw(self):
+
+        if self.selected:
+            color = (255, 0, 0)
+            width = 7
+        else:
+            color = (0, 0, 0)
+            width = 1
+
+        rect_fill = pygame.Rect((self.row * 80, self.col * 80), (80,80))
+        pygame.draw.rect(self.screen, (255,255,255), rect_fill)
+
+        cell_rect = pygame.Rect((self.row * 80, self.col * 80), (80, 80))
+        pygame.draw.rect(self.screen, color, cell_rect, width)
+
+        number_font = pygame.font.Font(None, 70)
+        title_surface = number_font.render(str(self.value), 0, (0, 0, 0))
+
+        self.screen.blit(title_surface, (cell_rect.centerx - 15, cell_rect.centery - 20))
+
+        if self.sketched is not None:
+            sketch_font = pygame.font.Font(None, 40)
+            other_surface = sketch_font.render(str(self.sketched), 0, (0,0,255))
+            self.screen.blit(other_surface, (cell_rect.left + 7, cell_rect.top + 5))
+
+
