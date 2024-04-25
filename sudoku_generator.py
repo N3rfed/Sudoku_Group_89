@@ -224,8 +224,8 @@ class SudokuGenerator:
         for i in range(self.removed_cells):
             num = 0
             while num == 0:
-                random_row_number = random.randint(0, 9)
-                random_col_number = random.randint(0, 9)
+                random_row_number = random.randint(0, len(self.board)-1)
+                random_col_number = random.randint(0, len(self.board)-1)
                 num = self.board[random_row_number][random_col_number]
             self.board[random_row_number][random_col_number] = 0
 
