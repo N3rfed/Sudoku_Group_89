@@ -44,7 +44,7 @@ class SudokuGenerator:
     def print_board(self):
         for i in range(self.row_length):
             for j in range(self.row_length):
-                print(self.board[i][j], end='')
+                print(self.board[i][j], end=' ')
             print()
 
     '''
@@ -58,9 +58,8 @@ class SudokuGenerator:
 	Return: boolean
     '''
 
-    # Fix later
     def valid_in_row(self, row, num):
-        for col in range(self.row_length):
+        for col in range(len(self.board[0])):
             if num == self.board[row][col]:
                 return False
         return True
@@ -76,9 +75,8 @@ class SudokuGenerator:
 	Return: boolean
     '''
 
-    # Fix later
     def valid_in_col(self, col, num):
-        for row in range(self.row_length):
+        for row in range(len(self.board[0])):
             if num == self.board[row][col]:
                 return False
         return True
@@ -114,7 +112,6 @@ class SudokuGenerator:
 	Return: boolean
     '''
 
-    # not sure if this is correct, im checking if the position is filled
     def is_valid(self, row, col, num):
         if self.valid_in_row(row, num) and self.valid_in_col(col, num) and self.valid_in_box(row, col, num):
             return True
@@ -136,7 +133,7 @@ class SudokuGenerator:
         box_values = []
         for row in range(row_start, row_start + 3):
             for col in range(col_start, col_start + 3):
-                possible_values = [n for n in range(1, 10) if n not in box_values]
+                possible_values = [n for n in range(1, 10) if self.is_valid(row_start, col_start, n)]
                 if possible_values:
                     digit = random.choice(possible_values)
                     self.board[row][col] = digit
@@ -227,7 +224,7 @@ class SudokuGenerator:
                 random_row_number = random.randint(0, len(self.board)-1)
                 random_col_number = random.randint(0, len(self.board)-1)
                 num = self.board[random_row_number][random_col_number]
-            self.board[random_row_number][random_col_number] = 0
+                self.board[random_row_number][random_col_number] = 0
 
 
 # '''
@@ -313,3 +310,12 @@ class Board:
 
     def check_board(self):
         pass
+
+
+sudoku_board = SudokuGenerator(9, 20)
+for i in range(0, 7):
+    for j in range(0, 7):
+        sudoku_board.fill_box(i, j)
+
+sudoku_board.remove_cells()
+sudoku_board.print_board()
