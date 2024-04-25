@@ -1,12 +1,12 @@
 import pygame, sys
-from board import Board
 import sudoku_generator
+from sudoku_generator import Board
 
 LINE_COLOR = (30, 227, 49)
 HEIGHT = 1000
 WIDTH = 1000
 
-def game_won(screen):
+def won_game(screen):
     win_font = pygame.font.Font(None, 100)
     button_font = pygame.font.Font(None, 70)
 
@@ -70,7 +70,6 @@ def lost_game(screen):
 
         pygame.display.update()
 
-
 def draw_game_start(screen):
     start_title_font = pygame.font.Font(None,100)
     button_font = pygame.font.Font(None, 70)
@@ -118,8 +117,7 @@ def draw_game_start(screen):
                     diff = 50
                     return diff
         pygame.display.update()
-
-def grid_buttons(buttonList):
+def draw_buttons(buttonList):
     button_font = pygame.font.Font(None, 70)
 
     reset_text = button_font.render("Reset", 0, (255, 255, 255))
@@ -152,6 +150,9 @@ def grid_buttons(buttonList):
 
     return
 
+
+
+
 if __name__ == "__main__":
     game_over = False
     restart = True
@@ -162,10 +163,10 @@ if __name__ == "__main__":
 
     while restart == True:
         restart = False
-        difficulty = draw_game_start(screen)
+        diff = draw_game_start(screen)
 
-        game_board = Board(720, 720, screen, difficulty, sudoku_generator.generate_sudoku(9, difficulty))
-        grid_buttons(buttons)
+        game_board = Board(720, 720, screen, diff, sudoku_generator.generate_sudoku(9, diff))
+        draw_buttons(buttons)
         game_board.draw()
 
         while True:
@@ -213,7 +214,7 @@ if __name__ == "__main__":
             game_board.draw()
             if game_board.is_full():
                 if game_board.check_board():
-                    restart = game_won(screen)
+                    restart = won_game(screen)
                 else:
 
                     restart = lost_game(screen)
