@@ -130,14 +130,11 @@ class SudokuGenerator:
     '''
 
     def fill_box(self, row_start, col_start):
-        box_values = []
-        for row in range(row_start, row_start + 3):
-            for col in range(col_start, col_start + 3):
-                possible_values = [n for n in range(1, 10) if self.is_valid(row_start, col_start, n)]
-                if possible_values:
-                    digit = random.choice(possible_values)
-                    self.board[row][col] = digit
-                    box_values.append(digit)
+        box_values = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        random.shuffle(box_values)
+        for row in range(self.box_length):
+            for col in range(self.box_length):
+                self.board[row_start + row][col_start + col]
 
     '''
     Fills the three boxes along the main diagonal of the board
@@ -221,8 +218,8 @@ class SudokuGenerator:
         for i in range(self.removed_cells):
             num = 0
             while num == 0:
-                random_row_number = random.randint(0, len(self.board)-1)
-                random_col_number = random.randint(0, len(self.board)-1)
+                random_row_number = random.randint(0, self.row_length-1)
+                random_col_number = random.randint(0, self.row_length-1)
                 num = self.board[random_row_number][random_col_number]
                 self.board[random_row_number][random_col_number] = 0
 
