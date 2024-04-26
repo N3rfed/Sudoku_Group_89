@@ -95,8 +95,8 @@ class SudokuGenerator:
     '''
 
     def valid_in_box(self, row_start, col_start, num):
-        for row in range(row_start, row_start + 1):
-            for col in range(col_start, col_start + 1):
+        for row in range(row_start, row_start + 3):
+            for col in range(col_start, col_start + 3):
                 if self.board[row][col] == num:
                     return False
         return True
@@ -113,7 +113,7 @@ class SudokuGenerator:
     '''
 
     def is_valid(self, row, col, num):
-        if self.valid_in_row(row, num) and self.valid_in_col(col, num) and self.valid_in_box(row, col, num):
+        if self.valid_in_row(row, num) and self.valid_in_col(col, num) and self.valid_in_box(row//3 * 3, col//3 * 3, num):
             return True
         else:
             return False
@@ -252,11 +252,11 @@ class SudokuGenerator:
 def generate_sudoku(size, removed):
     sudoku = SudokuGenerator(size, removed)
     sudoku.fill_values()
-    board = sudoku.get_board()
+    og_board = sudoku.get_board()
+    og_board = [x[:] for x in og_board]
     sudoku.remove_cells()
     board = sudoku.get_board()
-    return board
-
+    return (board, og_board)
 
 class Cell:
     def __init__(self, value, row, col, screen):
@@ -316,5 +316,3 @@ class Board:
 
     def check_board(self):
         pass
-
-sudoku = SudokuGenerator(9, 10)

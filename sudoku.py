@@ -132,9 +132,9 @@ def draw_buttons(buttonList):
     exit_surface.fill(LINE_COLOR)
     exit_surface.blit(exit_text, (10, 10))
 
-    reset_rectangle = reset_surface.get_rect(center=(WIDTH // 2 - 200, HEIGHT // 10 * 9))
+    reset_rectangle = reset_surface.get_rect(center=(WIDTH // 2 - 220, HEIGHT // 10 * 9))
     restart_rectangle = restart_surface.get_rect(center=(WIDTH // 2, HEIGHT // 10 * 9))
-    exit_rectangle = exit_surface.get_rect(center=(WIDTH // 2 + 200, HEIGHT // 10 * 9))
+    exit_rectangle = exit_surface.get_rect(center=(WIDTH // 2 + 220, HEIGHT // 10 * 9))
 
     screen.blit(reset_surface, reset_rectangle)
     screen.blit(restart_surface, restart_rectangle)
