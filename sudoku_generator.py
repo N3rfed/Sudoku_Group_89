@@ -95,11 +95,11 @@ class SudokuGenerator:
     '''
 
     def valid_in_box(self, row_start, col_start, num):
-        for row in range(self.box_length):
-            for col in range(self.box_length):
-                if self.board[row_start + row][col_start + col] == num:
+        for row in range(row_start, row_start + 1):
+            for col in range(col_start, col_start + 1):
+                if self.board[row][col] == num:
                     return False
-            return True
+        return True
 
     '''
     Determines if it is valid to enter num at (row, col) in the board
@@ -113,7 +113,6 @@ class SudokuGenerator:
     '''
 
     def is_valid(self, row, col, num):
-        # return self.valid_in_row(row, num) and self.valid_in_col(col, num) and self.valid_in_box(row, col, num)
         if self.valid_in_row(row, num) and self.valid_in_col(col, num) and self.valid_in_box(row, col, num):
             return True
         else:
@@ -131,19 +130,15 @@ class SudokuGenerator:
     '''
 
     def fill_box(self, row_start, col_start):
-        box_values = set() # [1, 2, 3, 4, 5, 6, 7, 8, 9]
-        # random.shuffle(box_values)
-        # for row in range(self.box_length):
-            # for col in range(self.box_length):
-                # self.board[row_start + row][col_start + col] = box_values.pop()
-        possible_values = [n for n in range(1, self.row_length + 1) if n not in box_values]
-        for i in range(self.box_length):
-            for j in range(self.box_length):
-                if possible_values:
-                    digit = random.choice(possible_values)
-                    self.board[row_start + i][col_start + j] = digit
-                    box_values.add(digit)
-                    possible_values.remove(digit)
+        box_values = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        for i in range(row_start, row_start + 3):
+            for j in range(col_start, col_start + 3):
+                random_valid_number = random.choice(box_values)
+                while not self.is_valid(i, j, random_valid_number):
+                    random_valid_number = random.choice(box_values)
+                self.board[i][j] = random_valid_number
+                box_values.remove(random_valid_number)
+        return self.board
 
     '''
     Fills the three boxes along the main diagonal of the board
@@ -322,11 +317,11 @@ class Board:
     def check_board(self):
         pass
 
-
-sudoku_board = SudokuGenerator(9, 20)
-for i in range(0, 7):
-    for j in range(0, 7):
-        sudoku_board.fill_box(i, j)
-
-sudoku_board.remove_cells()
-sudoku_board.print_board()
+#
+# sudoku_board = SudokuGenerator(9, 20)
+# sudoku_board.fill_box(0, 0)
+# sudoku_board.fill_box(0, 3)
+#
+#
+# sudoku_board.remove_cells()
+# sudoku_board.print_board()
