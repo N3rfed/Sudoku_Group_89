@@ -317,11 +317,4 @@ class Board:
     def check_board(self):
         pass
 
-#
-# sudoku_board = SudokuGenerator(9, 20)
-# sudoku_board.fill_box(0, 0)
-# sudoku_board.fill_box(0, 3)
-#
-#
-# sudoku_board.remove_cells()
-# sudoku_board.print_board()
+sudoku = SudokuGenerator(9, 10)
