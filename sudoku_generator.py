@@ -371,7 +371,10 @@ class Cell:
         pygame.draw.rect(self.screen, color, cell_rect, width)
 
         number_font = pygame.font.Font(None, 70)
-        title_surface = number_font.render(str(self.value), 0, (0, 0, 0))
+        if self.value == 0:
+            title_surface = number_font.render(" ", 0, (0, 0, 0))
+        else:
+            title_surface = number_font.render(str(self.value), 0, (0, 0, 0))
 
         self.screen.blit(title_surface, (cell_rect.centerx - 15, cell_rect.centery - 20))
 
