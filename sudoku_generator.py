@@ -316,7 +316,6 @@ class Board:
         self.selected_cell = None
 
     def draw(self):
-        self.screen.fill((138, 183, 255))
         pygame.draw.rect(self.screen, pygame.Color("black"), pygame.Rect(145, 15, 720, 720), 10)
         i = 1
         while (i * 80) < 720:

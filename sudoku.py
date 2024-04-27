@@ -119,6 +119,7 @@ def lost_game(screen):
 
         pygame.display.update()
 def draw_buttons(buttonList):
+    screen.fill((138, 183, 255))
     button_font = pygame.font.Font(None, 70)
 
     reset_text = button_font.render("Reset", 0, (255, 255, 255))
