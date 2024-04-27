@@ -8,13 +8,18 @@ WIDTH = 1000
 
 def draw_game_start(screen):
     start_title_font = pygame.font.Font(None,100)
+    other_text_font = pygame.font.Font(None, 85)
     button_font = pygame.font.Font(None, 70)
 
-    screen.fill((255,255,255))
+    screen.fill((179, 255, 207))
 
-    title_surface = start_title_font.render("Sudoku", 0 , (LINE_COLOR))
-    title_rectangle = title_surface.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 150))
+    title_surface = start_title_font.render("Welcome to Sudoku", 0 , (LINE_COLOR))
+    title_rectangle = title_surface.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 250))
     screen.blit(title_surface, title_rectangle)
+
+    other_text = other_text_font.render("Select Game Mode:", 0, (LINE_COLOR))
+    other_rectangle = other_text.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 50))
+    screen.blit(other_text, other_rectangle)
 
     easy_text = button_font.render("Easy", 0, (255,255,255))
     medium_text = button_font.render("Medium", 0, (255,255,255))
@@ -158,7 +163,7 @@ if __name__ == "__main__":
         restart = False
         diff = draw_game_start(screen)
 
-        game_board = Board(720, 720, screen, diff, sudoku_generator.generate_sudoku(9, diff))
+        game_board = Board(720, 720, screen, sudoku_generator.generate_sudoku(9, diff))
         draw_buttons(buttons)
         game_board.draw()
 

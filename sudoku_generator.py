@@ -219,13 +219,6 @@ class SudokuGenerator:
     '''
 
     def remove_cells(self):
-        '''for i in range(self.removed_cells):
-            num = 0
-            while num == 0:
-                random_row_number = random.randrange(9)
-                random_col_number = random.randrange(9)
-                num = self.board[random_row_number][random_col_number]
-            self.board[random_row_number][random_col_number] = 0'''
         counter = self.removed_cells
         while counter > 0:
             row = random.randrange(9)
@@ -252,11 +245,11 @@ class SudokuGenerator:
 def generate_sudoku(size, removed):
     sudoku = SudokuGenerator(size, removed)
     sudoku.fill_values()
-    og_board = sudoku.get_board()
-    og_board = [x[:] for x in og_board]
+    deep_board = sudoku.get_board()
+    deep_board = [nums[:] for nums in deep_board]
     sudoku.remove_cells()
     board = sudoku.get_board()
-    return (board, og_board)
+    return board, deep_board
 
 class Cell:
     def __init__(self, value, row, col, screen):
@@ -264,6 +257,9 @@ class Cell:
         self.row = row
         self.col = col
         self.screen = screen
+        self.default_sketch = 0
+        self.selected_cell = False
+
 
     def set_cell_value(self, value):
         self.value = value
@@ -272,8 +268,23 @@ class Cell:
         self.value = value
 
     def draw(self):
-        pass
+        if self.selected_cell:
+            color = (255, 0, 0)  # Red
+            width = 5
 
+        cell_outline = pygame.Rect((self.row*50, self.col*50), (50,50))
+        pygame.draw.rect(self.screen, (255, 255, 255), cell_outline)
+        inner_cell = pygame.Rect((self.row*50, self.col*50), (50,50))
+        pygame.draw.rect(self.screen, color, inner_cell, width)
+        num_font = pygame.font.Font(None, 15)
+        num_font_surface = num_font.render(self.value, 0, (0, 0, 0))
+        num_font_rect = num_font_surface.get_rect(center=(0,0))
+        self.screen.blit(num_font_surface,num_font_rect)
+
+
+        if self.value != 0 and self.default_sketch == 0:
+            num_font = pygame.font.Font(None, 25)
+            rendered_cell = num_font.render()
 
 class Board:
     def __init__(self, width, height, screen, difficulty):
@@ -283,7 +294,17 @@ class Board:
         self.difficulty = difficulty
 
     def draw(self):
-        pass
+        self.screen.fill((138, 183, 255))
+        pygame.draw.rect(self.screen, pygame.Color("black"), pygame.Rect(145, 15, 720, 720), 10)
+        i = 1
+        while (i * 80) < 720:
+            line_width = 5 if i % 3 > 0 else 10
+            pygame.draw.line(self.screen, pygame.Color("black"), pygame.Vector2((i * 80) + 145, 15),
+                             pygame.Vector2((i * 80) + 145, 730), line_width)
+            pygame.draw.line(self.screen, pygame.Color("black"), pygame.Vector2(145, (i * 80) + 15),
+                             pygame.Vector2(860, (i * 80) + 15), line_width)
+            i += 1
+        pygame.display.update()
 
     def select(self, row, col):
         pass
