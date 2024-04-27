@@ -55,7 +55,7 @@ def draw_game_start(screen):
                 if hard_rectangle.collidepoint(event.pos):
                     return 50
         pygame.display.update()
-def won_game(screen):
+def game_won(screen):
     win_font = pygame.font.Font(None, 100)
     button_font = pygame.font.Font(None, 70)
 
@@ -87,7 +87,7 @@ def won_game(screen):
 
         pygame.display.update()
 
-def lost_game(screen):
+def game_lost(screen):
 
     lose_font = pygame.font.Font(None, 100)
     button_font = pygame.font.Font(None, 70)
@@ -182,10 +182,10 @@ if __name__ == "__main__":
                         restart = True
                         break
                     elif buttons[0].collidepoint(event.pos):
-                        for i in range(len(game_board.cellArray)):
-                            for j in range(len(game_board.cellArray)):
-                                game_board.cellArray[i][j].sketched = None
-                                game_board.cellArray[i][j].value = game_board.boardArray[i][j]
+                        for i in range(len(game_board.cells)):
+                            for j in range(len(game_board.cells)):
+                                game_board.cells[i][j].sketched = None
+                                game_board.cells[i][j].value = game_board.board[i][j]
 
                 if event.type == pygame.KEYDOWN:
                     game_board.sketch(pygame.key.name(event.key))
@@ -212,9 +212,9 @@ if __name__ == "__main__":
             game_board.draw()
             if game_board.is_full():
                 if game_board.check_board():
-                    restart = won_game(screen)
+                    restart = game_won(screen)
                 else:
-                    restart = lost_game(screen)
+                    restart = game_lost(screen)
             pygame.display.update()
 
             if restart == True:
