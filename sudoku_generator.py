@@ -272,19 +272,16 @@ class Cell:
             color = (255, 0, 0)  # Red
             width = 5
 
-        cell_outline = pygame.Rect((self.row*50, self.col*50), (50,50))
+        cell_outline = pygame.Rect((self.row*50, self.col*50), (50, 50))
         pygame.draw.rect(self.screen, (255, 255, 255), cell_outline)
-        inner_cell = pygame.Rect((self.row*50, self.col*50), (50,50))
+
+        inner_cell = pygame.Rect((self.row*50, self.col*50), (50, 50))
         pygame.draw.rect(self.screen, color, inner_cell, width)
-        num_font = pygame.font.Font(None, 15)
-        num_font_surface = num_font.render(self.value, 0, (0, 0, 0))
-        num_font_rect = num_font_surface.get_rect(center=(0,0))
-        self.screen.blit(num_font_surface,num_font_rect)
 
+        if self.value != 0 and self.default_sketch == 0: # UNFINISHED
+            num_font = pygame.font.Font(None, 15)
+            num_font_surface = num_font.render(str(self.value), 0, (0, 0, 0))
 
-        if self.value != 0 and self.default_sketch == 0:
-            num_font = pygame.font.Font(None, 25)
-            rendered_cell = num_font.render()
 
 class Board:
     def __init__(self, width, height, screen, difficulty):
