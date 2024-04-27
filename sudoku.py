@@ -151,6 +151,7 @@ def draw_buttons(buttonList):
 
     return
 
+
 if __name__ == "__main__":
     game_over = False
     restart = True

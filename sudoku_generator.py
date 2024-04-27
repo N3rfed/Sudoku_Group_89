@@ -113,7 +113,8 @@ class SudokuGenerator:
     '''
 
     def is_valid(self, row, col, num):
-        if self.valid_in_row(row, num) and self.valid_in_col(col, num) and self.valid_in_box(row//3 * 3, col//3 * 3, num):
+        if self.valid_in_row(row, num) and self.valid_in_col(col, num) and self.valid_in_box(row // 3 * 3, col // 3 * 3,
+                                                                                             num):
             return True
         else:
             return False
@@ -226,6 +227,7 @@ class SudokuGenerator:
             self.board[row][col] = 0
             counter -= 1
 
+
 # '''
 # DO NOT CHANGE
 # Provided for students
@@ -242,6 +244,7 @@ class SudokuGenerator:
 # Return: list[list] (a 2D Python list to represent the board)
 # '''
 
+
 def generate_sudoku(size, removed):
     sudoku = SudokuGenerator(size, removed)
     sudoku.fill_values()
@@ -250,6 +253,7 @@ def generate_sudoku(size, removed):
     sudoku.remove_cells()
     board = sudoku.get_board()
     return board, deep_board
+
 
 class Cell:
     def __init__(self, value, row, col, screen):
@@ -260,35 +264,56 @@ class Cell:
         self.default_sketch = 0
         self.selected_cell = False
 
-
     def set_cell_value(self, value):
         self.value = value
 
     def set_sketched_value(self, value):
         self.value = value
 
+    # Draws this cell, along with the value inside it.
+    # If this cell has a nonzero value, that value is displayed.
+    # Otherwise, no value is displayed in the cell.
+    # The cell is outlined red if it is currently selected.
     def draw(self):
         if self.selected_cell:
             color = (255, 0, 0)  # Red
             width = 5
 
-        cell_outline = pygame.Rect((self.row*50, self.col*50), (50, 50))
+        cell_outline = pygame.Rect((self.row * 50, self.col * 50), (50, 50))
         pygame.draw.rect(self.screen, (255, 255, 255), cell_outline)
 
-        inner_cell = pygame.Rect((self.row*50, self.col*50), (50, 50))
+        inner_cell = pygame.Rect((self.row * 50, self.col * 50), (50, 50))
         pygame.draw.rect(self.screen, color, inner_cell, width)
 
-        if self.value != 0 and self.default_sketch == 0: # UNFINISHED
+        '''if self.value != 0 and self.default_sketch == 0:  # UNFINISHED
             num_font = pygame.font.Font(None, 15)
-            num_font_surface = num_font.render(str(self.value), 0, (0, 0, 0))
+            num_font_surface = num_font.render(str(self.value), True, (0, 0, 0))
+            num_text_rect = num_font_surface.get_rect(center=(cell_outline.centerx, cell_outline.centery))
+            self.screen.blit(num_font_surface, num_text_rect)'''
+        if self.value != 0:
+            number_font = pygame.font.Font(None, 70)
+            title_surface = number_font.render(str(self.value), True, (0, 0, 0))
+            self.screen.blit(title_surface, (cell_rect.centerx - 15, cell_rect.centery - 20))
+
+            # Render a sketched value if it exists
+        if self.sketched is not None:
+            sketch_font = pygame.font.Font(None, 40)
+            other_surface = sketch_font.render(str(self.sketched), True, (0, 0, 255))
+            self.screen.blit(other_surface, (cell_rect.left + 5, cell_rect.top + 5))
 
 
 class Board:
-    def __init__(self, width, height, screen, difficulty):
+    def __init__(self, width, height, screen, difficulty, board_data):
         self.width = width
         self.height = height
         self.screen = screen
         self.difficulty = difficulty
+        self.board, self.solution = board_data
+        self.cell_size = min(width, height) // 9
+        self.offsetX = 140
+        self.offsetY = 50
+        self.cell = [[0 for i in range(9)] for j in range(9)]
+        self.selected_cell = None
 
     def draw(self):
         self.screen.fill((138, 183, 255))
@@ -304,12 +329,22 @@ class Board:
         pygame.display.update()
 
     def select(self, row, col):
-        pass
+        if row is None or col is None:
+            return  # Invalid click
+        if 0 <= row < 9 and 0 <= col < 9:
+            # Clear previous selections if any
+            if self.selected_cell:
+                self.selected_cell = False
+            # Select the new cell
+            self.selected_cell = self.cell[row][col]
+            self.selected_cell = True
 
     def click(self, x, y):
-        self.x = x
-        self.y = y
-        coordinates = (x, y)
+        if self.offsetX <= x <= self.offsetX + self.width and self.offsetY <= y <= self.offsetY + self.height:
+            col = (x - self.offsetX) // self.cell_size
+            row = (y - self.offsetY) // self.cell_size
+            return row, col
+        return None
 
     def clear(self):
         pass
@@ -333,4 +368,6 @@ class Board:
         pass
 
     def check_board(self):
-        pass
+        if self.board == self.solution:
+            return True
+        return False
