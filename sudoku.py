@@ -180,6 +180,7 @@ if __name__ == "__main__":
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if buttons[2].collidepoint(event.pos):
                         pygame.quit()
+                        sys.exit()
                     elif buttons[1].collidepoint(event.pos):
                         restart = True
                         break
