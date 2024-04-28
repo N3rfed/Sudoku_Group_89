@@ -83,6 +83,7 @@ def game_won(screen):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if exit_rectangle.collidepoint(event.pos):
                     pygame.quit()
+                    sys.exit()
 
 
         pygame.display.update()
