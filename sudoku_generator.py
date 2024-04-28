@@ -223,7 +223,10 @@ class SudokuGenerator:
         while counter > 0:
             row = random.randrange(9)
             col = random.randrange(9)
-            self.board[row][col] = 0
+            if self.board[row][col] == 0:
+                continue
+            else:
+                self.board[row][col] = 0
             counter -= 1
 
 # '''
