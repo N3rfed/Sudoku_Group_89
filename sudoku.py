@@ -1,6 +1,6 @@
 import pygame, sys
 import sudoku_generator
-from sudoku_generator import Board
+from Cell_board import Board
 
 LINE_COLOR = (30, 227, 49)
 HEIGHT = 1000
