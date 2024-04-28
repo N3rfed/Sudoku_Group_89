@@ -165,7 +165,7 @@ if __name__ == "__main__":
         restart = False
         diff = draw_game_start(screen)
 
-        game_board = Board(720, 720, screen, diff, sudoku_generator.generate_sudoku(9, diff))
+        game_board = Board(720, 720, screen, diff, sudoku_generator.generate_real_sudoku(9, diff))
         draw_buttons(buttons)
         game_board.draw()
 
